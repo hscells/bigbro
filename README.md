@@ -42,3 +42,7 @@ go get -u install github.com/hscells/bigbro
 ```
 
 Alternatively, download a [prebuilt binary](https://github.com/hscells/bigbro/releases).
+
+_bigbro_ will save events as they occur into a file called `bigbro_%timestamp.log`. This file is located in the directory `bigbro` is run in.
+
+Events are sent via websockets.

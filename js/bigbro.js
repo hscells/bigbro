@@ -43,9 +43,7 @@ let BigBro = {
             y: e.y,
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
-            actor: {
-                identifier: this.data.user
-            }
+            actor: this.data.user
         };
         if (method === "keydown" || method === "keyup") {
             // Which key was actually pressed?

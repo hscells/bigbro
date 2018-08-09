@@ -52,6 +52,7 @@ func main() {
                                                                     ...is always watching
 
  Harry Scells 2018
+ version 09.Aug.2018
 
 `)
 	} else {
@@ -59,6 +60,7 @@ func main() {
 ...is always watching
 
 Harry Scells 2018
+version 09.Aug.2018
 `)
 	}
 	g.Run("0.0.0.0:1984")

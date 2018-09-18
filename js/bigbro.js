@@ -22,16 +22,18 @@ let BigBro = {
         }
 
         this.ws = new WebSocket(protocol + this.data.server + "/event");
-
         let self = this;
-        for (let i = 0; i < this.data.events.length; i++) {
-            window.addEventListener(this.data.events[i], function (e) {
-                self.log(e, self.data.events[i]);
-            })
-        }
+        this.ws.onopen = function () {
+            for (let i = 0; i < self.data.events.length; i++) {
+                window.addEventListener(self.data.events[i], function (e) {
+                    self.log(e, self.data.events[i]);
+                })
+            }
+        };
+        return this
     },
     // log logs an event with a specified method name (normally the actual event name).
-    log: function (e, method) {
+    log: function (e, method, comment) {
         let event = {
             target: e.target.tagName,
             name: e.target.name,
@@ -56,6 +58,9 @@ let BigBro = {
         if (method === "wheel") {
             // Strength of the wheel rotation.
             event.comment = e.deltaY.toString();
+        }
+        if (comment != null) {
+            event.comment = comment;
         }
         this.ws.send(JSON.stringify(event));
     }

@@ -35,10 +35,12 @@ func wsEvent(ws *websocket.Conn, l bigbro.Logger) {
 			var event bigbro.Event
 			err := ws.ReadJSON(&event)
 			if err != nil {
+				log.Println(err)
 				return
 			}
 			err = l.Log(event)
 			if err != nil {
+				log.Println(err)
 				return
 			}
 		}

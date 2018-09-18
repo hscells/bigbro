@@ -2,22 +2,60 @@ package main
 
 import (
 	"fmt"
+	"github.com/alexflint/go-arg"
 	"github.com/buger/goterm"
 	"github.com/gin-gonic/gin"
 	"github.com/hscells/bigbro"
 	"log"
-	"time"
 )
 
 type server struct {
 	l bigbro.Logger
 }
 
+type args struct {
+	Format   string `help:"how events should be formatted and written" arg:"positional"`
+	Filename string `help:"filename to output logs to"`
+	Index    string `help:"index for Elasticsearch to use"`
+	V        string `help:"version for Elasticsearch event type"`
+	URL      string `help:"URL for Elasticsearch"`
+}
+
+func (args) Version() string {
+	return "18.Sep.2018"
+}
+
+func (args) Description() string {
+	return "server for receiving and processing bigbro events"
+}
+
 func main() {
-	t := time.Now().Format(time.Stamp)
-	logger, err := bigbro.NewLogger(fmt.Sprintf("bigbrother_%s.log", t), bigbro.CSVFormatter{})
-	if err != nil {
-		log.Fatalln(err)
+	var (
+		args   args
+		err    error
+		logger bigbro.Logger
+	)
+	p := arg.MustParse(&args)
+	if args.Format == "elasticsearch" && args.V == "" && args.Index == "" {
+		p.Fail("you must provide one of --index and --v")
+	}
+	if args.Format == "csv" && args.Filename == "" {
+		p.Fail("you must provide one of --filename")
+	}
+
+	switch args.Format {
+	case "csv":
+		logger, err = bigbro.NewCSVLogger(args.Filename)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	case "elasticsearch":
+		logger, err = bigbro.NewElasticsearchLogger(args.Index, args.V, args.URL)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	default:
+		log.Fatalf("%s is not a valid log format\n", args.Format)
 	}
 
 	s := server{
@@ -60,7 +98,7 @@ func main() {
 ...is always watching
 
 Harry Scells 2018
-version 09.Aug.2018
+version 18.Sep.2018
 `)
 	}
 	g.Run("0.0.0.0:1984")

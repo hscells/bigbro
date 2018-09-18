@@ -1,7 +1,6 @@
 package bigbro
 
 import (
-	"io"
 	"os"
 	"time"
 )
@@ -36,27 +35,38 @@ type Event struct {
 
 // Logger is the way in which logs are written to a file.
 type Logger struct {
-	f         io.Writer
 	formatter Formatter
 }
 
-// NewLogger creates a new logger.
-func NewLogger(name string, formatter Formatter) (Logger, error) {
+// NewCSVLogger creates a new CSV logger.
+func NewCSVLogger(name string) (Logger, error) {
 	lf, err := os.OpenFile(name, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return Logger{}, err
 	}
 	lf.Truncate(0)
 
+	formatter := CSVFormatter{
+		w: lf,
+	}
+
 	return Logger{
-		f:         lf,
 		formatter: formatter,
+	}, nil
+}
+
+// NewElasticsearchLogger creates a new Elasticsearch logger.
+func NewElasticsearchLogger(index, version, url string) (Logger, error) {
+	f, err := NewElasticsearchFormatter(index, version, url)
+	if err != nil {
+		return Logger{}, err
+	}
+	return Logger{
+		formatter: f,
 	}, nil
 }
 
 // Log writes an event to the log file using the specified formatter.
 func (l Logger) Log(e Event) error {
-	line := l.formatter.Format(e)
-	_, err := l.f.Write([]byte(line))
-	return err
+	return l.formatter.Write(e)
 }

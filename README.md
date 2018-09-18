@@ -1,10 +1,10 @@
 # Big Brother
 
-_bigbro_ is a website interaction logging service. 
+_bigbro_ is a website interaction logging service. Logging can currently be written directly to a file (i.e. CSV) or ingested to Elasticsearch.
 
 ## Client
 
-To use _bigbro_ on a website, include the following Javascript snippet (this repository hosts `bigbro.js` in the [js folder](js)):
+To use _bigbro_ on a website, include the following Javascript snippet (this repository hosts `bigbro.js` in the [js folder](js/bigbro.js)):
 
 ```html
 <script type="text/javascript" src="bigbro.js"></script>
@@ -15,7 +15,22 @@ To use _bigbro_ on a website, include the following Javascript snippet (this rep
 
 This will allow the page to capture most events that occur by interacting with the page.
 
-Custom logging events can also be added, see the following example:
+The arguments to `BigBro.init` are as follows:
+
+ - `actor`: A unique identifier of the current user.
+ - `server`: The address _bigbro_ is running on (please omit protocol; this is determined automatically).
+ - (optional) `events`: A list of events that will be listened on globally (at the window level); e.g. "click", "mousemove".
+
+Additional events can also be loaded in at initiation:
+
+```html
+<script type="text/javascript" src="bigbro.js"></script>
+<script type="text/javascript">
+    BigBro.init("username", "localhost:1984", ["mousemove", "onload"]);
+</script>
+```
+
+Custom logging events can also be added, for example:
 
 ```html
 <script type="text/javascript" src="bigbro.js"></script>
@@ -27,38 +42,61 @@ Custom logging events can also be added, see the following example:
 </script>
 ```
 
-The arguments to `BigBro.init` are as follows:
-
- - `actor`: A unique identifier of the current user.
- - `server`: The address _bigbro_ is running on (please omit protocol; this will be determined automatically).
- - (optional) `events`: A list of events that will be listened on globally (at the window level); e.g. "click", "mousemove".
-
 ## Server
 
 _bigbro_ is written in Go. To install locally, please use:
 
 ```bash
-go install github.com/hscells/bigbro/cmd/bigbro
+$ go install github.com/hscells/bigbro/cmd/bigbro
 ```
 
 Alternatively, download a [prebuilt binary](https://github.com/hscells/bigbro/releases).
 
-_bigbro_ will save events as they occur into a file called `bigbro_%timestamp.log`. This file is located in the directory `bigbro` is run in.
+For help with the server, run:
 
-Events are sent via websockets.
+```bash
+$ bigbro --help
+```
+
+```
+Usage: bigbro [--filename FILENAME] [--index INDEX] [--v V] [--url URL] FORMAT
+
+Positional arguments:
+  FORMAT                 how events should be formatted and written
+
+Options:
+  --filename FILENAME    filename to output logs to
+  --index INDEX          index for Elasticsearch to use
+  --v V                  version for Elasticsearch event type
+  --url URL              URL for Elasticsearch
+  --help, -h             display this help and exit
+  --version              display version and exit
+```
+
+To output logs to a CSV file, use:
+
+```bash
+$ bigbro --filename my_application.log csv
+```
+
+To output logs to Elasticsearch, use:
+
+```bash
+$ bigbro --index bigbro --v 1 --url http://localhost:9200 elasticsearch
+```
 
 ## Tools
 
 To perform analysis, one may create heatmaps with the _bbheat_ tool. To install this tool, use:
 
 ```bash
-go install github.com/hscells/bigbro/cmd/bbheat
+$ go install github.com/hscells/bigbro/cmd/bbheat
 ```
 
 For help with this tool, run:
 
 ```bash
-bbheat --help
+$ bbheat --help
 ```
 
 ```bash

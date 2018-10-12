@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hscells/bigbro"
 	"log"
+	"os"
 )
 
 type server struct {
@@ -78,6 +79,11 @@ func main() {
 		c.Next()
 	})
 
+	port := os.Getenv("BIGBRO_PORT")
+	if len(port) == 0 {
+		port = "1984"
+	}
+
 	g.GET("/event", s.handleEvent)
 	if goterm.Width() > 91 {
 		fmt.Print(`
@@ -90,7 +96,7 @@ func main() {
                                                                     ...is always watching
 
  Harry Scells 2018
- version 09.Aug.2018
+ version 13.Oct.2018
 
 `)
 	} else {
@@ -98,8 +104,8 @@ func main() {
 ...is always watching
 
 Harry Scells 2018
-version 18.Sep.2018
+version 13.Oct.2018
 `)
 	}
-	g.Run("0.0.0.0:1984")
+	g.Run(fmt.Sprintf("0.0.0.0:%s", port))
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hscells/bigbro"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -15,11 +16,12 @@ type server struct {
 }
 
 type args struct {
-	Format   string `help:"how events should be formatted and written" arg:"positional"`
-	Filename string `help:"filename to output logs to"`
-	Index    string `help:"index for Elasticsearch to use"`
-	V        string `help:"version for Elasticsearch event type"`
-	URL      string `help:"URL for Elasticsearch"`
+	Format      string `help:"how events should be formatted and written" arg:"positional"`
+	Filename    string `help:"filename to output logs to"`
+	Index       string `help:"index for Elasticsearch to use"`
+	V           string `help:"version for Elasticsearch event type"`
+	URL         string `help:"URL for Elasticsearch"`
+	CheckOrigin bool   `help:"enable or disable same-origin requests"`
 }
 
 func (args) Version() string {
@@ -59,6 +61,10 @@ func main() {
 		log.Fatalf("%s is not a valid log format\n", args.Format)
 	}
 
+	bigbro.Upgrader.CheckOrigin = func(r *http.Request) bool {
+		return args.CheckOrigin
+	}
+
 	s := server{
 		l: logger,
 	}
@@ -96,7 +102,7 @@ func main() {
                                                                     ...is always watching
 
  Harry Scells 2018
- version 13.Oct.2018
+ version 15.Oct.2018
 
 `)
 	} else {
@@ -104,7 +110,7 @@ func main() {
 ...is always watching
 
 Harry Scells 2018
-version 13.Oct.2018
+version 15.Oct.2018
 `)
 	}
 	g.Run(fmt.Sprintf("0.0.0.0:%s", port))

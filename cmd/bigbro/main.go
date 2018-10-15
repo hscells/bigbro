@@ -61,6 +61,7 @@ func main() {
 		log.Fatalf("%s is not a valid log format\n", args.Format)
 	}
 
+	fmt.Printf("checking origin? %v\n", args.CheckOrigin)
 	bigbro.Upgrader.CheckOrigin = func(r *http.Request) bool {
 		return args.CheckOrigin
 	}

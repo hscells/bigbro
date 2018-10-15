@@ -2,7 +2,7 @@ package bigbro
 
 import (
 	"context"
-	"github.com/gin-gonic/gin/json"
+	"encoding/json"
 	"github.com/olivere/elastic"
 	"time"
 )

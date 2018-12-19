@@ -8,8 +8,8 @@ let BigBro = {
             "unload", "reset", "submit", "scroll", "resize",
             "cut", "copy", "paste", "select", "keydown", "keyup"
         ],
-        queue: []
     },
+    queue: [],
     // init must be called with the user and the server, and optionally a list of
     // events to listen to globally.
     init: function (user, server, events) {

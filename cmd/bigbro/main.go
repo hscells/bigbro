@@ -92,7 +92,7 @@ func main() {
 	}
 
 	g.GET("/", func(c *gin.Context) {
-		c.Data()
+		c.Data(http.StatusOK, "text/plain", []byte(fmt.Sprintf("bigbro version %s", args.Version())))
 	})
 	g.GET("/event", s.handleEvent)
 	if goterm.Width() > 91 {

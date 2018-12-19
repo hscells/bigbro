@@ -65,7 +65,7 @@ let BigBro = {
         }
 
         if (this.ws.readyState !== 1) {
-            console.warn("bigbro websocket unable to connect");
+            this.queue.push(event);
             return false;
         }
 

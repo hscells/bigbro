@@ -8,6 +8,7 @@ let BigBro = {
             "unload", "reset", "submit", "scroll", "resize",
             "cut", "copy", "paste", "select", "keydown", "keyup"
         ],
+        queue: []
     },
     // init must be called with the user and the server, and optionally a list of
     // events to listen to globally.
@@ -62,6 +63,16 @@ let BigBro = {
         if (comment != null) {
             event.comment = comment;
         }
+
+        if (this.ws.readyState !== 1) {
+            console.warn("bigbro websocket unable to connect");
+            return false;
+        }
+
+        while (this.queue.length > 0) {
+            this.ws.send(JSON.stringify(this.queue.pop()))
+        }
+
         this.ws.send(JSON.stringify(event));
     }
 };

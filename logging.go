@@ -44,7 +44,6 @@ func NewCSVLogger(name string) (Logger, error) {
 	if err != nil {
 		return Logger{}, err
 	}
-	lf.Truncate(0)
 
 	formatter := CSVFormatter{
 		w: lf,

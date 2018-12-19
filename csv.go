@@ -3,11 +3,13 @@ package bigbro
 import (
 	"fmt"
 	"io"
+	"sync"
 )
 
 // CSVFormatter is a formatter that formats in comma separated format.
 type CSVFormatter struct {
-	w io.Writer
+	w  io.Writer
+	mu sync.Mutex
 }
 
 // Format in comma separated file.
@@ -17,6 +19,8 @@ func (l CSVFormatter) Format(e Event) string {
 
 // Write the csv line to file.
 func (l CSVFormatter) Write(e Event) error {
+	l.mu.Lock()
+	defer l.mu.Unlock()
 	_, err := l.w.Write([]byte(l.Format(e)))
 	return err
 }

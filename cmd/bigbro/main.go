@@ -25,7 +25,7 @@ type args struct {
 }
 
 func (args) Version() string {
-	return "18.Sep.2018"
+	return "20.Dec.2018"
 }
 
 func (args) Description() string {
@@ -91,9 +91,12 @@ func main() {
 		port = "1984"
 	}
 
+	g.GET("/", func(c *gin.Context) {
+		c.Data()
+	})
 	g.GET("/event", s.handleEvent)
 	if goterm.Width() > 91 {
-		fmt.Print(`
+		fmt.Printf(`
 
  @@@@@@@  @@@  @@@@@@@       @@@@@@@  @@@@@@@   @@@@@@  @@@@@@@ @@@  @@@ @@@@@@@@ @@@@@@@ 
  @@!  @@@ @@! !@@            @@!  @@@ @@!  @@@ @@!  @@@   @@!   @@!  @@@ @@!      @@!  @@@
@@ -103,16 +106,18 @@ func main() {
                                                                     ...is always watching
 
  Harry Scells 2018
- version 15.Oct.2018
+ version %s
 
-`)
+`, args.Version())
 	} else {
-		fmt.Print(`Big Brother
+		fmt.Printf(`Big Brother
 ...is always watching
 
 Harry Scells 2018
-version 15.Oct.2018
-`)
+version %s
+`, args.Version())
 	}
+
+	fmt.Printf("port: %s", port)
 	g.Run(fmt.Sprintf("0.0.0.0:%s", port))
 }

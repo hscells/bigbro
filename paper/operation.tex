@@ -1,0 +1,65 @@
+\section{Operation of the System}
+
+% What does your demonstration do and how does it work? What does it look like?
+
+Big Brother has two main components: a high-throughput server and a JavaScript client. The client listens to events that occur in a web browser, and the server ingests them in real-time.
+
+\subsection{Client}
+
+The Big Brother client has been written to provide maximum functionality with minimal setup and configuration. The smallest amount of code to have Big Brother listen to events is presented in Listing~\ref{lst:minimal}. By default, Big Brother is configured to listen to all events on all elements on a page. This client has been put to the test on multiple user studies with highly complex interfaces~\cite{todo}. Practitioners of these studies and users of their systems noticed no slowdown of their study as a result of using Big Brother.
+
+\begin{lstlisting}[language=JavaScript, label=lst:minimal, caption=Minimal example of code required to initialise \bb on the client-side. Note the \texttt{session\_id} which should already be initialied elsewhere.]
+<script src="bigbro.js"></script>
+<script type="text/javascript">
+BigBro.init(session_id, "localhost:1984");
+</script>
+\end{lstlisting}
+
+Often, however, the practitioner of a user study may only be interested in a subset of events. Listing~\ref{lst:events} presents the JavaScript code required on the client-side to restrict Big Brother to listen to two events: \texttt{mousemove} and \texttt{onload}, which will record the positional information of the users' mouse, and will log the time the session began respectively.
+
+\begin{lstlisting}[language=JavaScript, label=lst:events, caption=Initialising \bb to listen on only certain global events. HTML code removed for brevity.]
+BigBro.init(session_id, 
+            "localhost:1984", 
+            ["mousemove", "onload"]);
+\end{lstlisting}
+
+Finally, sometimes, the practitioner of a user study may wish to capture custom interactions or events from their user. For example, logging a custom event for when a user clicks a specific button on the page. Listing~\ref{lst:custom} presents the JavaScript code required on the client-side to wire the processing of a custom event to Big Brother's exposed custom logging functionality.
+
+\begin{lstlisting}[language=JavaScript, label=lst:custom, caption=Wiring up \bb to listen to click events and to log a custom event.]
+let bb = BigBro.init(session_id, 
+                     "localhost:1984");
+let w = window;
+w.addEventListener("click", function (e) {
+    bb.log(e, "custom_event");
+})
+\end{lstlisting}
+
+\subsection{Server}
+
+\begin{table}
+\centering
+\begin{tabular}{p{0.2\linewidth}p{0.7\linewidth}}
+\hline
+Component & Description of Component \\
+\hline
+Target & The HTML element that has caused the event to trigger. \\
+Name & The \texttt{name} attribute of the HTML element in Target. \\
+ID & The \texttt{id} attribute of the HTML element in Target\\
+Method & The name of the method that caused the event to trigger. \\
+Location & The web-page location on the server (URL, with query string and anchors). \\
+Comment & Any additional custom information that may be useful to interpreting the event. \\
+X & The x-position within the web browser that the event occurred at. \\
+Y & The y-position within the web browser that the event occurred at. \\
+ScreenWidth & The width of the web browser the event occurred within. \\
+ScreenHeight & The height of the web browser the event occurred within. \\
+Time & The time the event happened.\\
+Actor & An identifier that can be used to refer to the user that caused the event, e.g., session ID. \\
+\hline
+\end{tabular}
+\caption{The components of an event.}
+\label{tbl:event}
+\end{table}
+
+The server processes interactions from users as \textit{events}. The components of an event are summarised in Table~\ref{tbl:event}. Events are streamed from the user's web browser to a centralised server over websockets. This enables the real-time ingestion of interactions. Currently, Big Brother can output logs to a local csv file as well as directly indexing them to Elasticsearch.
+
+

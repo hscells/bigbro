@@ -1,0 +1,10 @@
+BenchmarkCSVLogging-8   	   79026	     22211 ns/op	   5.58 MB/s
+BenchmarkCSVLogging-8   	   71455	     29515 ns/op	   4.27 MB/s
+BenchmarkCSVLogging-8   	   37600	     32794 ns/op	   3.87 MB/s
+BenchmarkCSVLogging-8   	   84356	     31229 ns/op	   4.07 MB/s
+BenchmarkCSVLogging-8   	   60418	     19310 ns/op	   6.53 MB/s
+BenchmarkCSVLogging-8   	   82922	     23706 ns/op	   5.36 MB/s
+BenchmarkCSVLogging-8   	   72714	     30970 ns/op	   4.10 MB/s
+BenchmarkCSVLogging-8   	   83862	     27306 ns/op	   4.61 MB/s
+BenchmarkCSVLogging-8   	   86094	     24868 ns/op	   5.07 MB/s
+BenchmarkCSVLogging-8   	   51250	     24377 ns/op	   5.21 MB/s

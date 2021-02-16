@@ -26,6 +26,7 @@
 
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{hyperref}
 
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
@@ -140,7 +141,10 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-A good demonstration submission should be interesting to a SIGIR audience and should show a novel solution to a problem. The demonstration submission should address the following questions: Who is your target user? Why does your system exist and why is it important? What does your demonstration do and how does it work? What does it look like? How does it compare with existing systems? Finally, how and when might your technology have an impact, either technically or commercially?
+%A good demonstration submission should be interesting to a SIGIR audience and should show a novel solution to a problem. The demonstration submission should address the following questions: Who is your target user? Why does your system exist and why is it important? What does your demonstration do and how does it work? What does it look like? How does it compare with existing systems? Finally, how and when might your technology have an impact, either technically or commercially?
+Fine-grained logging of interactions in user studies is important for studying user behaviour. However, in many research scenarios, the way interactions are logged is tied to the application. We present a generic, application-independent service for logging interactions in web-pages, specifically targetting user studies. Our service, Big Brother, can be dropped-in to existing user interfaces with almost no configuration required by researchers. Big Brother has already been used in several user studies to record interactions in a number of user study scenarios, such as lab-based and crowdsourcing environments. We further demonstrate the ability for Big Brother to scale to very large user studies through benchmarking experiments. Big Brother also provides a number of tools for analysing and visualising interactions.
+
+Big Brother significantly lowers the barrier to entry for logging user interactions by providing minimal but powerful, no configuration necessary service for researchers and practitioners of user studies that can scale to hundreds of concurrent sessions. We have made the source code and releases for Big Brother available for download at \href{https://github.com/hscells/bigbro}{https://github.com/hscells/bigbro}
 \end{abstract}
 
 %%
@@ -180,7 +184,7 @@ A good demonstration submission should be interesting to a SIGIR audience and sh
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{search interface, chat search, conversation search}
+\keywords{user studies, interaction logging}
 
 
 
@@ -189,18 +193,17 @@ A good demonstration submission should be interesting to a SIGIR audience and sh
 %% information and builds the first part of the formatted document.
 \maketitle
 
-\section{Problem and Target Users}
+\section{Problem, Target Users \& Importance}
 
-Recording interactions in a user study setting is extremely important for understanding user behaviour.
- 
-However, writing the code to implement the recording of interactions can be tedious and a burden on those who wish to run user studies.
- 
-Indeed, there is a considerable amount of software infrastructure to be considered when logging user interactions: How to efficiently process streams of interactions from multiple users/sessions? How to store the logs? How to deal with all the types of interactions a user might make?
- 
-When we encountered these questions, it was clear that a \textit{standard}, \textit{simple}, and \textit{drop-in} service was required. 
+Recording interactions in a user study setting is extremely important for understanding user behaviour. However, writing the code to implement the recording of interactions can be tedious and a burden on those who wish to run user studies. Indeed, there is a considerable amount of software infrastructure to be considered when logging user interactions: How to efficiently process streams of interactions from multiple users/sessions? How to store the logs? How to deal with all the types of interactions a user might make? When we encountered these questions, it was clear that a \textit{standard}, \textit{simple}, and \textit{drop-in} service was required. The requirement for the service to passively log interactions once loaded into a web page also provides a generic way to capture events from users no matter the framework or setting that the user study is run.
+We present this service to the wider community as an Open Source tool, dubbed \textit{Big Brother} (\bb). 
 
-We present this service to the wider community as an Open Source tool, dubbed \textit{Big Brother} (\bb).
- 
+\begin{figure}
+\centering
+\includegraphics[width=0.6\linewidth]{overview}
+\caption{High-level overview of the system architecture.}
+\end{figure}
+
 \input{importance}
 \input{operation}
 \input{comparison}
@@ -220,7 +223,7 @@ Two lines\\ of acks
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-base}
+\bibliography{sigir2021-bigbro-demo}
 
 
 \end{document}

@@ -6,7 +6,7 @@ Big Brother has two main components: a high-throughput server and a JavaScript c
 
 \subsection{Client}
 
-The Big Brother client has been written to provide maximum functionality with minimal setup and configuration. The smallest amount of code to have Big Brother listen to events is presented in Listing~\ref{lst:minimal}. By default, Big Brother is configured to listen to all events on all elements on a page. This client has been put to the test on multiple user studies with highly complex interfaces~\cite{todo}. Practitioners of these studies and users of their systems noticed no slowdown of their study as a result of using Big Brother.
+The Big Brother client has been written to provide maximum functionality with minimal setup and configuration. The smallest amount of code to have Big Brother listen to events is presented in Listing~\ref{lst:minimal}. By default, Big Brother is configured to listen to all events on all elements on a page. This client has been put to the test on multiple user studies with highly complex interfaces~\cite{cross2021search,jimmy2019health,jimmy2020health}. Practitioners of these studies and users of their systems noticed no slowdown of their study as a result of using Big Brother.
 
 \begin{lstlisting}[language=JavaScript, label=lst:minimal, caption=Minimal example of code required to initialise \bb on the client-side. Note the \texttt{session\_id} which should already be initialied elsewhere.]
 <script src="bigbro.js"></script>
@@ -112,9 +112,11 @@ We demonstrate the ability of Big Brother to scale and accommodate very large us
 	51,250     & 24.37          & 5.21              \\ \hline\hline
 	70,969.70$\pm$16,326.29 & 26.60$\pm$0.27 & 4.87$\pm$0.34     \\ \hline
 \end{tabular}
-\caption{Benchmark results of logging events. The last row indicates average across the runs, with standard deviation.}
+\caption{Benchmark results of logging events. The last row indicates average across the runs, with standard deviation. The processed events column indicates the number of events processed in one second.}
 \label{tbl:bench}
 \end{table}
 
 
+\subsection{Other Tools}
 
+bbheat can be used to create heatmaps of user interactions

@@ -60,6 +60,34 @@ Actor & An identifier that can be used to refer to the user that caused the even
 \label{tbl:event}
 \end{table}
 
-The server processes interactions from users as \textit{events}. The components of an event are summarised in Table~\ref{tbl:event}. Events are streamed from the user's web browser to a centralised server over websockets. This enables the real-time ingestion of interactions. Currently, Big Brother can output logs to a local csv file as well as directly indexing them to Elasticsearch.
+The server processes interactions from users as \textit{events}. The components that comprise an event are summarised in Table~\ref{tbl:event}.
+An event captures information about the HTML elements that were interacted with (\textbf{Target}, \textbf{Name}, \textbf{ID}), how the event was triggered (\textbf{Method}), what the URL was on the page that the event occurred (\textbf{Location}), additional custom comments (\textbf{Comment}), positional information to "replay" interactions (\textbf{X}, \textbf{Y}, \textbf{ScreenWidth}, \textbf{ScreenHeight}), the time that the event occurred (\textbf{Time}), and the user that caused the event (\textbf{Actor}).
+
+Events are streamed from the user's web browser to a centralised server over websockets. This enables the real-time ingestion of interactions. Currently, Big Brother can output logs to a local csv file as well as directly indexing them to Elasticsearch. A small, real example of logs captured during a user study is presented in Listing~\ref{lst:logs}. The researcher who ran this study decided to output their interaction logs directly to a csv file. The ordering of components in these events is how they are produced by \bb. Listing~\ref{lst:components} shows the ordering of components in the csv file output. These logs show the interactions of two user sessions from a human intelligence task (HIT) on a popular crowdsourcing platform. This slice of interaction logs begins when the \texttt{A1} user starts a HIT, and ends when they finish the HIT. At the same time, another user (\texttt{A2}) is in the middle of another HIT. The researcher running this user study records when their users click on a multiple select dropdown. The very final line in the log, when user \texttt{A1} finishes the HIT, also logs the recorded answers to the questionnaire using the Comment component: \texttt{T|T|T|T|T}.
+
+\begin{figure*}
+\begin{lstlisting}[caption=Order of event components in Listing~\ref{lst:logs},label=lst:components]
+Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
+\end{lstlisting}
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,caption=Example log file capturing two user sessions at the same time. Note that there were far more interactions captured during the study and that this is a small contrived slice of the data. Much of the information from the URL has been redacted.,label=lst:logs]
+19-01-03 06:12:45,A1,hit_start,,,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:47,A1,click,SELECT,q1,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1079,299,1319,646,
+19-01-03 06:12:48,A1,click,SELECT,q1,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:49,A1,click,SELECT,q2,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1067,328,1319,646,
+19-01-03 06:12:46,A2,click,SELECT,q4,,https://example.com?assignmentId=ABC789&hitId=HIT2,806,233,1063,306,
+19-01-03 06:12:46,A2,click,SELECT,q4,,https://example.com?assignmentId=ABC789&hitId=HIT2,0,0,1063,306,
+19-01-03 06:12:50,A1,click,SELECT,q2,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:50,A1,click,SELECT,q3,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1067,354,1319,646,
+19-01-03 06:12:51,A1,click,SELECT,q3,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:49,A2,click,SELECT,q5,,https://example.com?assignmentId=ABC789&hitId=HIT2,779,260,1063,306,
+19-01-03 06:12:52,A1,click,SELECT,q4,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1069,390,1319,646,
+19-01-03 06:12:50,A2,click,SELECT,q5,,https://example.com?assignmentId=ABC789&hitId=HIT2,0,0,1063,306,
+19-01-03 06:12:53,A1,click,SELECT,q4,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:54,A1,click,SELECT,q5,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1074,424,1319,646,
+19-01-03 06:12:55,A1,click,SELECT,q5,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
+19-01-03 06:12:56,A1,hit_end,INPUT,,submit,https://example.com?assignmentId=XYZ123&hitId=HIT1,659,617,1319,646,T|T|T|T|T
+\end{lstlisting}
+\end{figure*}
+
 
 

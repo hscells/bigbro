@@ -15,7 +15,7 @@ var Upgrader = websocket.Upgrader{
 	},
 }
 
-// WsEvent handles read events from the web socket.
+// WsEvent handles reading events from the web socket.
 func WsEvent(ws *websocket.Conn, l Logger) {
 
 	readWait := 1 * time.Millisecond
@@ -24,7 +24,7 @@ func WsEvent(ws *websocket.Conn, l Logger) {
 	// defer closing of web socket
 	defer func() {
 		readTicker.Stop()
-		ws.Close()
+		_ = ws.Close()
 	}()
 
 	for {
@@ -41,6 +41,38 @@ func WsEvent(ws *websocket.Conn, l Logger) {
 				log.Println(err)
 				return
 			}
+		}
+	}
+}
+
+// WsRecord handles reading screen captures from the web socket.
+func WsRecord(ws *websocket.Conn) {
+
+	readWait := 1 * time.Millisecond
+	readTicker := time.NewTicker(readWait)
+
+	// defer closing of web socket
+	defer func() {
+		readTicker.Stop()
+		_ = ws.Close()
+	}()
+
+	for {
+		select {
+		case <-readTicker.C:
+			var capture Capture
+			err := ws.ReadJSON(&capture)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			go func() {
+				err = WriteCapture(capture)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+			}()
 		}
 	}
 }

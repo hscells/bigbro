@@ -99,6 +99,7 @@ func main() {
 		c.Data(http.StatusOK, "text/plain", []byte(fmt.Sprintf("bigbro version %s", args.Version())))
 	})
 	g.GET("/event", s.handleEvent)
+	g.GET("/capture", s.handleCapture)
 	if goterm.Width() > 91 {
 		fmt.Printf(`
 

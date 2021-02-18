@@ -9,7 +9,13 @@ let BigBro = {
             "cut", "copy", "paste", "select", "keydown", "keyup"
         ],
     },
-    queue: [],
+    eventQueue: [],
+    captureQueue: [],
+    // State associated with recording user.
+    startedRecording: false,
+    captureStream: null,
+    captureInterval: 1000,
+
     // init must be called with the user and the server, and optionally a list of
     // events to listen to globally.
     init: function (user, server, events) {
@@ -22,14 +28,18 @@ let BigBro = {
             protocol = 'wss://';
         }
 
-        this.ws = new WebSocket(protocol + this.data.server + "/event");
+        this.wsEvent = new WebSocket(protocol + this.data.server + "/event");
+        this.wsRecord = new WebSocket(protocol + this.data.server + "/capture");
         let self = this;
-        this.ws.onopen = function () {
+        this.wsEvent.onopen = function () {
             for (let i = 0; i < self.data.events.length; i++) {
                 window.addEventListener(self.data.events[i], function (e) {
                     self.log(e, self.data.events[i]);
                 })
             }
+        };
+        this.wsRecord.onopen = function () {
+            window.setInterval(self.capture, self.captureInterval, self)
         };
         return this
     },
@@ -64,15 +74,77 @@ let BigBro = {
             event.comment = comment;
         }
 
-        if (this.ws.readyState !== 1) {
-            this.queue.push(event);
+        if (this.wsEvent.readyState !== 1) {
+            this.eventQueue.push(event);
             return false;
         }
 
-        while (this.queue.length > 0) {
-            this.ws.send(JSON.stringify(this.queue.pop()))
+        while (this.eventQueue.length > 0) {
+            this.wsEvent.send(JSON.stringify(this.eventQueue.pop()))
         }
 
-        this.ws.send(JSON.stringify(event));
+        this.wsEvent.send(JSON.stringify(event));
+    },
+    startCaptureWhenClicked: async function (elementId, interval) {
+        let self = this;
+        document.getElementById(elementId).addEventListener("click", function () {
+            try {
+                if (!self.startedRecording) {
+                    self.startedRecording = true;
+                    self.captureStream = navigator.mediaDevices.getDisplayMedia({video: {cursor: "always"}, displaySurface: "browser", browserWindow: false});
+                }
+            } catch (err) {
+                console.error("Error: " + err);
+            }
+        });
+    },
+    capture: function (self) {
+        if (self.captureStream === null || self.captureStream === undefined) {
+            return
+        }
+        if (!self.startedRecording) {
+            return
+        }
+        const canvas = document.createElement("canvas");
+
+        const context = canvas.getContext("2d");
+        const video = document.createElement("video");
+
+        try {
+
+            self.captureStream.then((stream) => {
+                video.srcObject = stream;
+                video.play().then(() => {
+                    canvas.setAttribute("height", window.innerHeight);
+                    canvas.setAttribute("width", window.innerWidth);
+                    context.drawImage(video, 0, 0, window.innerWidth, window.innerHeight);
+                    let blob = canvas.toDataURL("image/png");
+
+                    console.log(blob);
+
+                    let capture = {
+                        actor: self.data.user,
+                        time: new Date().toISOString(),
+                        data: blob,
+                    };
+
+                    if (self.wsRecord.readyState !== 1) {
+                        self.captureQueue.push(capture);
+                        return false;
+                    }
+
+                    while (self.captureQueue.length > 0) {
+                        self.captureQueue.send(JSON.stringify(self.captureQueue.pop()))
+                    }
+
+                    self.wsRecord.send(JSON.stringify(capture))
+                });
+
+
+            })
+
+        } catch (err) {
+            console.error("Error: " + err);
+        }
     }
 };

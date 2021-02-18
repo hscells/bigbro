@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Big Brother Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+</head>
+<body>
+<main>
+    <article class="card">
+        <header>
+            <h3 id="start-capture">Newsearch</h3>
+        </header>
+        <footer>
+            <label>Enter your query:
+                <input type="text">
+            </label>
+            <button id="search">search</button>
+        </footer>
+    </article>
+    <article class="card" id="results" style="visibility: hidden">
+        <header>
+            <h4>results:</h4>
+        </header>
+        <footer>
+            <ul>
+                <li>
+                    <p><a href="#">Duis fringilla efficitur metus at. </a></p>
+                    <p>Voluptatibus molestiae modi totam enim. Aliquid aliquid quia nobis asperiores animi non. Repudiandae nihil illum excepturi aspernatur est cumque. Temporibus natus vero natus ut.</p>
+                </li>
+                <li>
+                    <p><a href="#">Cras sit amet neque euismod. </a></p>
+                    <p>Voluptate eaque repellat molestiae vel error qui. Dolores sequi omnis quia ipsa perspiciatis voluptates. Velit qui enim qui ad non dignissimos rem beatae. Ab expedita ea dolorem enim aliquam quas pariatur nostrum. Corporis et consectetur consectetur commodi. Officiis voluptates magni tempore.</p>
+                </li>
+                <li>
+                    <p><a href="#">Integer dictum lorem sed nunc. </a></p>
+                    <p>Ut dolorum a et qui nemo dolorem minima. Ut omnis reiciendis omnis perferendis necessitatibus maiores. Et sit expedita quibusdam et quae. Et labore mollitia assumenda quibusdam. Incidunt rem necessitatibus esse.</p>
+                </li>
+                <li>
+                    <p><a href="#">Nulla ac tellus sodales, suscipit. </a></p>
+                    <p>Dignissimos nesciunt dolor totam quidem temporibus ipsa consequuntur similique. Eaque in suscipit aut quae ea. Dicta laudantium ex est consectetur quaerat iusto illum sunt. Est aut corporis libero voluptatem molestiae. Quos nihil aspernatur perferendis aut voluptate deleniti libero quis. Omnis et ut quia alias odit aut aliquam.</p>
+                </li>
+                <li>
+                    <p><a href="#">Donec vitae vulputate ligula, ut. </a></p>
+                    <p>Tempora iste eum ut provident voluptatem repudiandae quo ut. Qui placeat possimus eligendi fuga nihil repudiandae vel tempore. Ipsum voluptatum velit ducimus. Quos quam sint magni molestiae sequi. Saepe molestiae ut illo soluta vitae et sint.</p>
+                </li>
+            </ul>
+        </footer>
+    </article>
+    <div id="data"></div>
+</main>
+<script type="text/javascript" src="bigbro.js"></script>
+<script type="text/javascript">
+    let bb = BigBro.init("U1", "localhost:1984");
+    bb.startCaptureWhenClicked("start-capture");
+    document.getElementById("search").addEventListener("click", function () {
+        document.getElementById("results").style.visibility = "visible";
+    })
+</script>
+</body>
+</html>

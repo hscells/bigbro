@@ -83,7 +83,11 @@ An event captures information about the HTML elements that were interacted with 
 Events are streamed from the user's web browser to a centralised server over websockets. This enables the real-time ingestion of interactions. Currently, Big Brother can output logs to a local csv file as well as directly indexing them to Elasticsearch. A small, real example of logs captured during a user study is presented in Listing~\ref{lst:logs}. The researcher who ran this study decided to output their interaction logs directly to a csv file. The ordering of components in these events is how they are produced by \bb. Listing~\ref{lst:components} shows the ordering of components in the csv file output. These logs show the interactions of two user sessions from a human intelligence task (HIT) on a popular crowdsourcing platform. This slice of interaction logs begins when the \texttt{A1} user starts a HIT, and ends when they finish the HIT. At the same time, another user (\texttt{A2}) is in the middle of another HIT. The researcher running this user study records when their users click on a multiple select dropdown. The very final line in the log, when user \texttt{A1} finishes the HIT, also logs the recorded answers to the questionnaire using the Comment component: \texttt{T|T|T|T|T}.
 
 In addition to allowing the researcher to see in real-time how users are interacting with their experiments (and potentially throw away sessions from users who completed the study too quickly), it provides a second way to record responses that users make to questionnaires.
-
+\begin{figure}
+	\includegraphics[width=\linewidth]{heatmap}
+	\caption{Heat map of mouse interactions overlaid on top of an image of a search interface captured using the screen recording functionality of Big Brother.}
+	\label{fig:heat}
+\end{figure}
 \begin{figure*}
 \begin{lstlisting}[caption=Order of event components in Listing~\ref{lst:logs},label=lst:components]
 Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
@@ -108,9 +112,11 @@ Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
 \end{lstlisting}
 \end{figure*}
 
+
 \subsection{Benchmark}
 
-We demonstrate the ability of Big Brother to scale and accommodate very large user studies by providing a benchmark of logging user interactions directly to a csv file. To make the benchmark more realistic, we simulate the time it takes to process an event by encoding and decoding the event, and populate the event with random data. Each event has Target, Method, Location, X, Y, ScreenHeight, ScreenWidth, Time and Actor components. To benchmark the code, we use the standard benchmarking framework included in the Go language (as this is the language that the server is written in). In this framework, a loop containing the process described earlier is run $N$ times until it takes a second for the benchmark to complete. We report the total number of events processed, the average time it takes to process one event in microseconds, and the throughput in MB/s. We run the benchmark ten times and report both each run and the overall statistics. The benchmarks were run on a 2.7GHz Intel Core i7 8-core 2018 MacBook Pro with 16GB of LPDDR3 RAM and solid-state flash storage. Table~\ref{tbl:bench} presents the results of the benchmark. On average, Big Brother can process approximately 70,000 events per second, with each event processed in approximately 26$\mu$s, and write the interactions to a file at a speed of approximately 5MB/s. \todo{what is the average number of events per second/per minute from real user studies we have run?} 
+We demonstrate the ability of Big Brother to scale and accommodate very large user studies by providing a benchmark of logging user interactions directly to a csv file. To make the benchmark more realistic, we simulate the time it takes to process an event by encoding and decoding the event, and populate the event with random data. Each event has Target, Method, Location, X, Y, ScreenHeight, ScreenWidth, Time and Actor components. To benchmark the code, we use the standard benchmarking framework included in the Go language (as this is the language that the server is written in). In this framework, a loop containing the process described earlier is run $N$ times until it takes a second for the benchmark to complete. We report the total number of events processed, the average time it takes to process one event in microseconds, and the throughput in MB/s. We run the benchmark ten times and report both each run and the overall statistics. The benchmarks were run on a 2.7GHz Intel Core i7 8-core 2018 MacBook Pro with 16GB of LPDDR3 RAM and solid-state flash storage. Table~\ref{tbl:bench} presents the results of the benchmark. On average, Big Brother can process approximately 70,000 events per second, with each event processed in approximately 26$\mu$s, and write the interactions to a file at a speed of approximately 5MB/s. In our studies, while we never came close to this amount of interactions per second, \bb did remain resilient and experienced no faults over the course of a number of studies.
+
 
 \begin{table}
 \centering
@@ -133,18 +139,25 @@ We demonstrate the ability of Big Brother to scale and accommodate very large us
 \label{tbl:bench}
 \end{table}
 
-\begin{figure}[h!]
-	\includegraphics[width=\linewidth]{heatmap}
-	\caption{Heat map of mouse interactions overlaid on top of an image of a search interface captured using the screen recording functionality of Big Brother.}
-	\label{fig:heat}
-\end{figure}
+
 
 \subsection{Other Tools}
 
-The Big Brother family also includes other tools for visualising and manipulating data produced by the \bb tool. These include \bbheat and \bbstat.
+The Big Brother family also includes other tools for visualising and manipulating data produced by the \bb tool. These include \bbheat and \bbstat, which are compatible with CSV formatted logs produced by \bb. If Elasticsearch is used as the storage medium for logs, it is possible to use the infrastructure that has been developed for it, including Kibana. Note that it is possible to use the Big Brother tools and the Elasticsearch tools by allowing \bb to write to a CSV file and ingesting that file into Elasticsearch using software such as Logstash.
 
 \subsection{\texttt{bbheat}}
 
 Often it useful to be able to visualise the interactions of users over user interfaces. For this, the \bbheat tool can be used. This tool allows one to produce a static or animated heat map of mouse movements. The tool has several options for filtering interactions, for example by actor, time, and browser window size. An example of one of the heat maps produced by this tool is presented in Figure~\ref{fig:heat}. Using the screen recording functionality of Big Brother, it becomes trivial to visualise how different users interact with a system, or how changes in interface design can impact user behaviour.
 
 \subsection{\texttt{bbstat}}
+
+Analysing log data can be tedious, especially processing the data for analysis. The \bbstat tool provides common functionality for processing interaction logs for later analysis. The functionality provided by the \bbstat tool include:
+
+\begin{description}
+	\item[Filtering] Interaction logs can be split into multiple files based on actor, time, or comment.
+	\item[Aggregation] Produce reports such as how long a user spent on different pages or how many times certain elements in a page were clicked.
+\end{description}
+
+\subsection{Kibana}
+
+Kibana is a product that is developed by the same company that build Elasticsearch. It provides tools for visualising and manipulating data. Kibana has been developed with time series logs in mind. A deeper description of Kibana is not provided here for space reasons, but it can be a powerful alternative to the tools provided by Big Brother. 

@@ -6,7 +6,8 @@ let BigBro = {
         events: ["click", "dblclick", "mousedown", "mouseup",
             "mouseenter", "mouseout", "wheel", "loadstart", "loadend", "load",
             "unload", "reset", "submit", "scroll", "resize",
-            "cut", "copy", "paste", "select", "keydown", "keyup"
+            "cut", "copy", "paste", "select", "keydown", "keyup",
+            "ontouchstart", "ontouchmove", "ontouchend", "ontouchcancel"
         ],
     },
     eventQueue: [],

@@ -15,6 +15,7 @@ BigBro.init(session_id, "localhost:1984");
 </script>
 \end{lstlisting}
 
+\noindent
 Often, however, the practitioner of a user study may only be interested in a subset of events. Listing~\ref{lst:events} presents the JavaScript code required on the client-side to restrict Big Brother to listen to two events: \texttt{mousemove} and \texttt{onload}, which will record the positional information of the users' mouse, and will log the time the session began respectively.
 
 \begin{lstlisting}[language=JavaScript, label=lst:events, caption=Initialising \bb to listen on only certain global events. HTML code removed for brevity.]
@@ -23,7 +24,8 @@ BigBro.init(session_id,
             ["mousemove", "onload"]);
 \end{lstlisting}
 
-Finally, sometimes, the practitioner of a user study may wish to capture custom interactions or events from their user. For example, logging a custom event for when a user clicks a specific button on the page. Listing~\ref{lst:custom} presents the JavaScript code required on the client-side to wire the processing of a custom event to Big Brother's exposed custom logging functionality.
+\noindent
+Sometimes, the practitioner of a user study may wish to capture custom interactions or events from their user. For example, logging a custom event for when a user clicks a specific button on the page. Listing~\ref{lst:custom} presents the JavaScript code required on the client-side to wire the processing of a custom event to Big Brother's exposed custom logging functionality.
 
 \begin{lstlisting}[language=JavaScript, label=lst:custom, caption=Wiring up \bb to listen to click events and to log a custom event.]
 let bb = BigBro.init(session_id, 
@@ -34,7 +36,22 @@ w.addEventListener("click", function (e) {
 })
 \end{lstlisting}
 
+\noindent
+Finally, it is possible to record the screen using Big Brother. Listing~\ref{lst:capture} presents the minimum JavaScript code required to start a live capture of the browser window a user is looking at. Because of browser security, screen capture cannot be started automatically, and must be initiated by clicking an element (as seen in the argument provided to the function in Listing~\ref{lst:capture}). Captures are saved as a series of images. The time between each capture can be configured. The images can be stitched together into a video later, or can be used to highlight specific interactions from the logs. 
+
+\begin{lstlisting}[language=JavaScript, label=lst:capture, caption=Wiring up \bb to listen to click events and to log a custom event.]
+let bb = BigBro.init(session_id, 
+                     "localhost:1984");
+bb.startCaptureOnClick("capture");
+\end{lstlisting}
+
+
+The Big Brother client has been specifically designed to require very minimal configuration and setup. Likewise, the server is designed to be run independently of components such as the web server a user study is hosted on.
+
+
 \subsection{Server}
+
+The server is written in the Go programming language. This provides a number of advantages, primarily the ability for the server code to be compiled into a high-performance single-binary file for multiple platforms (macOS, Windows, Linux, etc.). The server can be configured using command-line options. It can also be integrated into existing web servers as library code, so long as those servers are written in Go.
 
 \begin{table}
 \centering

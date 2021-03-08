@@ -153,7 +153,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-Fine-grained logging of interactions in user studies is important for studying user behaviour, among other things. However, in many research scenarios, the way interactions are logged are usually tied to a monolithic system. We present a generic, application-independent service for logging interactions in web-pages, specifically targetting user studies. Our service, Big Brother, can be dropped-in to existing user interfaces with almost no configuration required by researchers. Big Brother has already been used in several user studies to record interactions in a number of user study research scenarios, such as lab-based and crowdsourcing environments. We further demonstrate the ability for Big Brother to scale to very large user studies through benchmarking experiments. Big Brother also provides a number of additional tools for visualising and analysing interactions.
+Fine-grained logging of interactions in user studies is important for studying user behaviour, among other reasons. However, in many research scenarios, the way interactions are logged are usually tied to a monolithic system. We present a generic, application-independent service for logging interactions in web-pages, specifically targetting user studies. Our service, Big Brother, can be dropped-in to existing user interfaces with almost no configuration required by researchers. Big Brother has already been used in several user studies to record interactions in a number of user study research scenarios, such as lab-based and crowdsourcing environments. We further demonstrate the ability for Big Brother to scale to very large user studies through benchmarking experiments. Big Brother also provides a number of additional tools for visualising and analysing interactions.
 
 Big Brother significantly lowers the barrier to entry for logging user interactions by providing a minimal but powerful, no configuration necessary, service for researchers and practitioners of user studies that can scale to thousands of concurrent sessions. We have made the source code and releases for Big Brother available for download at \href{https://github.com/hscells/bigbro}{https://github.com/hscells/bigbro}
 \end{abstract}
@@ -206,13 +206,13 @@ Big Brother significantly lowers the barrier to entry for logging user interacti
 
 \section{Problem, Target Users \& Importance}
 
-Recording interactions in a user study setting is extremely important for understanding user behaviour. However, writing the code to implement the recording of interactions can be tedious and a burden on those who wish to run user studies. Indeed, there is a considerable amount of software infrastructure to be considered when logging user interactions: How to efficiently process streams of interactions from multiple users/sessions? How to store the logs? How to deal with all the types of interactions a user might make? When we encountered these questions, it was clear that a \textit{standard}, \textit{simple}, and \textit{drop-in} service was required. The requirement for the service to passively log interactions once loaded into a web page also provides a generic way to capture events from users no matter the framework or setting that the user study is run.
-We present this service to the wider community as an Open Source tool, dubbed \textit{Big Brother}. An overview of the Big Brother architecture is presented in Figure~\ref{fig:overview}.
+Recording interactions in a user study setting is extremely important for understanding user behaviour, among other reasons. However, writing the code to implement the recording of interactions can be tedious and a burden on those who wish to run user studies. Indeed, there is a considerable amount of software infrastructure to be considered when logging user interactions: How to efficiently process streams of interactions from multiple users/sessions? How to store the logs? How to deal with all the types of interactions a user might make? When we encountered these questions, it was clear that a \textit{standard}, \textit{simple}, and \textit{drop-in} service was required. The requirement for the service to passively log interactions once loaded into a web page also provides a generic way to capture events from users no matter the framework or setting that the user study is run.
+We present this service to the wider IR community as an Open Source tool, dubbed \textit{Big Brother}. An overview of the Big Brother architecture is presented in Figure~\ref{fig:overview}.
 
 \begin{figure}
 \centering
-\includegraphics[width=1\linewidth]{overview}
-\caption{High-level overview of the system architecture.}
+\includegraphics[width=0.75\linewidth]{overview}
+\caption{High-level overview of the system architecture.\vspace{-16pt}}
 \label{fig:overview}
 \end{figure}
 
@@ -227,9 +227,9 @@ We present this service to the wider community as an Open Source tool, dubbed \t
 %% (and NOT an unnumbered section). This ensures the proper
 %% identification of the section in the article metadata, and the
 %% consistent spelling of the heading.
-\begin{acks}
-Two lines\\ of acks
-\end{acks}
+\subsubsection*{Acknowledgements}
+We would like to thank Anton van der Vegt and Sebastian Cross for their use of Big Brother in their user studies. Dr Guido Zuccon is the recipient of an Australian Research Council DECRA Research Fellowship (DE180101579).
+
 
 %%
 %% The next two lines define the bibliography style to be used, and

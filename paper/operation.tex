@@ -112,9 +112,9 @@ In addition to allowing the researcher to see in real-time how users are interac
 \end{figure*}
 
 \vspace{-8pt}
-\subsection{Benchmark}
+\subsection{Throughput Benchmark}
 
-We demonstrate the ability of Big Brother to scale and accommodate very large user studies by providing a benchmark of logging user interactions directly to a csv file. To make the benchmark more realistic, we simulate the time it takes to process an event by encoding and decoding the event, and populate the event with random data. Each event has Target, Method, Location, X, Y, ScreenHeight, ScreenWidth, Time and Actor components. To benchmark the code, we use the standard benchmarking framework included in the Go language (as this is the language that the server is written in). In this framework, a loop containing the process described earlier is run $N$ times until it takes a second for the benchmark to complete. We report the total number of events processed, the average time it takes to process one event in microseconds, and the throughput in MB/s. We run the benchmark ten times and report both each run and the overall statistics. The benchmarks were run on a 2.7GHz Intel Core i7 8-core 2018 MacBook Pro with 16GB of LPDDR3 RAM and solid-state flash storage. Table~\ref{tbl:bench} presents the results of the benchmark. On average, Big Brother can process approximately 70,000 events per second, with each event processed in approximately 26$\mu$s, and write the interactions to a file at a speed of approximately 5MB/s. In our studies, while we never came close to this amount of interactions per second, \bb did remain resilient and experienced no faults over the course of a number of studies.
+We demonstrate the ability of Big Brother to scale and accommodate very large user studies by providing a throughput benchmark of logging user interactions directly to a csv file. To make the benchmark more realistic, we simulate the time it takes to process an event by encoding and decoding the event, and populate the event with random data. Each event has Target, Method, Location, X, Y, ScreenHeight, ScreenWidth, Time and Actor components. To benchmark the code, we use the standard benchmarking framework included in the Go language (as this is the language that the server is written in). In this framework, a loop containing the process described earlier is run $N$ times until it takes a second for the benchmark to complete. We report the total number of events processed, the average time it takes to process one event in microseconds, and the throughput in MB/s. We run the benchmark ten times and report both each run and the overall statistics. The benchmarks were run on a 2.7GHz Intel Core i7 8-core 2018 MacBook Pro with 16GB of LPDDR3 RAM and solid-state flash storage. Table~\ref{tbl:bench} presents the results of the benchmark. On average, Big Brother can process approximately 70,000 events per second, with each event processed in approximately 26$\mu$s, and write the interactions to a file at a speed of approximately 5MB/s. In our studies, while we never came close to this amount of interactions per second, \bb did remain resilient and experienced no faults over the course of a number of studies.
 
 
 \begin{table}
@@ -140,7 +140,7 @@ We demonstrate the ability of Big Brother to scale and accommodate very large us
 
 
 
-\subsection{Other Tools}
+\subsection{Other Tools within Big Brother}
 
 The Big Brother family also includes other tools for visualising and manipulating data produced by the \bb tool. These include \bbheat and \bbstat, which are compatible with CSV formatted logs produced by \bb. If Elasticsearch is used as the storage medium for logs, it is possible to use the infrastructure that has been developed for it, including Kibana. Note that it is possible to use the Big Brother tools and the Elasticsearch tools by allowing \bb to write to a CSV file and ingesting that file into Elasticsearch using software such as Logstash. For details on how to use these tools, please refer to the GitHub repository.
 

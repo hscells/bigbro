@@ -8,7 +8,7 @@ Big Brother has two main components: a high-throughput server and a JavaScript c
 
 The Big Brother client has been written to provide maximum functionality with minimal setup and configuration. The smallest amount of code to have Big Brother listen to events is presented in Listing~\ref{lst:minimal}. By default, Big Brother is configured to listen to all events on all elements on a page. This client has been put to the test on multiple user studies with highly complex interfaces~\cite{cross2021search,jimmy2019health,jimmy2020health}. Practitioners of these studies and users of their systems noticed no slowdown of their study as a result of using Big Brother.
 
-\begin{lstlisting}[language=JavaScript, label=lst:minimal, caption=Minimal example of code required to initialise \bb on the client-side. Note the \texttt{session\_id} which should already be initialied elsewhere.]
+\begin{lstlisting}[language=JavaScript, label=lst:minimal, caption=Minimal example of code required to initialise \bb on the client-side. Note the \texttt{session\_id} which should already be initialised elsewhere.]
 <script src="bigbro.js"></script>
 <script type="text/javascript">
 BigBro.init(session_id, "localhost:1984");
@@ -85,9 +85,7 @@ Events are streamed from the user's web browser to a centralised server over web
 In addition to allowing the researcher to see in real-time how users are interacting with their experiments (and potentially throw away sessions from users who completed the study too quickly), it provides a second way to record responses that users make to questionnaires.
 
 \begin{figure*}
-\begin{lstlisting}[caption=Order of event components in Listing~\ref{lst:logs},label=lst:components]
-Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
-\end{lstlisting}
+\vspace{-8pt}
 \begin{lstlisting}[basicstyle=\footnotesize\ttfamily,caption=Example log file capturing two user sessions at the same time. Note that there were far more interactions captured during the study and that this is a small contrived slice of the data. Much of the information from the URL has been redacted.,label=lst:logs]
 19-01-03 06:12:45,A1,hit_start,,,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
 19-01-03 06:12:47,A1,click,SELECT,q1,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1079,299,1319,646,
@@ -105,6 +103,10 @@ Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
 19-01-03 06:12:54,A1,click,SELECT,q5,,https://example.com?assignmentId=XYZ123&hitId=HIT1,1074,424,1319,646,
 19-01-03 06:12:55,A1,click,SELECT,q5,,https://example.com?assignmentId=XYZ123&hitId=HIT1,0,0,1319,646,
 19-01-03 06:12:56,A1,hit_end,INPUT,,submit,https://example.com?assignmentId=XYZ123&hitId=HIT1,659,617,1319,646,T|T|T|T|T
+\end{lstlisting}
+\vspace{-8pt}
+\begin{lstlisting}[caption=Order of event components in Listing~\ref{lst:logs},label=lst:components]
+	Time,Actor,Method,Target,Name,ID,Location,X,Y,ScreenWidth,ScreenHeight,Comment
 \end{lstlisting}
 \vspace{-8pt}
 \end{figure*}
@@ -146,12 +148,14 @@ The Big Brother family also includes other tools for visualising and manipulatin
 \subsection{\texttt{bbheat}}
 
 \begin{figure}
+	\vspace{-8pt}
 	\includegraphics[width=\linewidth]{heatmap}
-	\caption{Heat map of mouse interactions overlaid on top of an image of a search interface captured using the screen recording functionality of Big Brother.\vspace{-16pt}}
+	\vspace{-8pt}
+	\caption{Heat map of mouse interactions overlaid on top of an image of a search interface captured using the screen recording functionality of Big Brother.\vspace{-8pt}}
 	\label{fig:heat}
 \end{figure}
 
-Often it useful to be able to visualise the interactions of users over user interfaces. For this, the \bbheat tool can be used. This tool allows one to produce a static or animated heat map of mouse movements. The tool has several options for filtering interactions, for example by actor, time, and browser window size. An example of one of the heat maps produced by this tool is presented in Figure~\ref{fig:heat}. Using the screen recording functionality of Big Brother, it becomes trivial to visualise how different users interact with a system, or how changes in interface design can impact user behaviour.
+Often it is useful to be able to visualise the interactions of users over user interfaces. For this, the \bbheat tool can be used. This tool allows one to produce a static or animated heat map of mouse movements. The tool has several options for filtering interactions, for example by actor, time, and browser window size. An example of one of the heat maps produced by this tool is presented in Figure~\ref{fig:heat}. Using the screen recording functionality of Big Brother, it becomes trivial to visualise how different users interact with a system, or how changes in interface design can impact user behaviour.
 
 \vspace{-8pt}
 \subsection{\texttt{bbstat}}

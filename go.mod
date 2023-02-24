@@ -10,6 +10,7 @@ require (
 	github.com/fortytw2/leaktest v1.2.0 // indirect
 	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 // indirect
 	github.com/gin-gonic/gin v1.3.0
+	github.com/golang/protobuf v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/hscells/autotls v0.0.0-20181219231931-919d92fa7e09
 	github.com/json-iterator/go v1.1.5 // indirect
@@ -22,9 +23,8 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.2.2 // indirect
 	github.com/ugorji/go/codec v0.0.0-20180831062425-e253f1f20942 // indirect
-	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
+	golang.org/x/crypto v0.1.0
 	golang.org/x/image v0.0.0-20180708004352-c73c2afc3b81
-	golang.org/x/perf v0.0.0-20201207232921-bdcc6220ee90 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/yaml.v2 v2.2.1 // indirect
